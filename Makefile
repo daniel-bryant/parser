@@ -37,3 +37,8 @@ clean:
 	rm -f lexer.yy.cpp lexer.yy.hpp
 	rm -f gram.cpp gram.hpp gram.out
 	rm -f shell
+	rm -f test/*.o
+	rm -f run_test
+
+test: test/test.o parse.o gram.o lexer.yy.o
+	$(CXX) $(CXXFLAGS) test/test.o parse.o gram.o lexer.yy.o -o run_test
