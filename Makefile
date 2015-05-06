@@ -3,10 +3,10 @@ CXXFLAGS = -Wall -Wextra -Weffc++ -Wfloat-equal -Wshadow\
 	-Wwrite-strings -Wswitch-default -Wswitch-enum -Wparentheses\
 	-Woverloaded-virtual -pedantic
 
-shell: main.o gram.o lexer.yy.o
-	$(CXX) $(CXXFLAGS) main.o gram.o lexer.yy.o -o shell
+shell: main.o parse.o gram.o lexer.yy.o
+	$(CXX) $(CXXFLAGS) main.o parse.o gram.o lexer.yy.o -o shell
  
-main.o: main.cpp lexer.yy.hpp gram.hpp
+parse.o: parse.cc lexer.yy.hpp gram.hpp
  
 gram.cpp: lemonfiles
  
