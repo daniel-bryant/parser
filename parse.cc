@@ -11,7 +11,8 @@ void Parse(void* parser, int token, Token* tokenInfo, bool* valid);
 void ParseFree(void* parser, void(*freeProc)(void*));
 YYSTYPE yylval;
 
-void parse(const std::string& commandLine) {
+int parse(const std::string& commandLine) {
+  int retval = 1;
   // Set up the scanner
   yyscan_t scanner;
   yylex_init(&scanner);
@@ -33,10 +34,12 @@ void parse(const std::string& commandLine) {
   while (lexCode > 0 && validParse);
 
   if (-1 == lexCode) {
+    retval = -1;
     std::cerr << "The scanner encountered an error.\n";
   }
 
   if (!validParse) {
+    retval = -1;
     std::cerr << "The parser encountered an error.\n";
   }
 
@@ -44,4 +47,6 @@ void parse(const std::string& commandLine) {
   yy_delete_buffer(bufferState, scanner);
   yylex_destroy(scanner);
   ParseFree(gramParser, free);
+
+  return retval;
 }

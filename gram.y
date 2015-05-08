@@ -19,10 +19,10 @@
 %left TIMES DIVIDE .
 %right EXP .
 
-start ::= expr(A) .                  { if (A.str)
+start ::= expr(A) .                  { /*if (A.str)
                                          std::cout << "variable: " << A.str << std::endl;
                                        if (A.num)
-                                         std::cout << "result: " << A.num << std::endl; }
+                                         std::cout << "result: " << A.num << std::endl;*/ }
 
 expr(A) ::= expr(B) PLUS expr(C) .   { A.num = B.num + C.num; }
 expr(A) ::= expr(B) MINUS expr(C) .  { A.num = B.num - C.num; }
@@ -35,7 +35,9 @@ expr(A) ::= expr(B) EXP expr(C) .    { A.num = pow(B.num, C.num); }
 expr(A) ::= MINUS expr(B) . [EXP]    { A.num = -B.num; }
 
 expr(A) ::= LPAREN expr(B) RPAREN .  { A.num = B.num; }
+expr(A) ::= LPAREN RPAREN .          { A.num = 0; }
 
 expr(A) ::= NUM(B) .                 { A.num = B->num; }
 expr ::= STRING .                    {}
 expr(A) ::= IDENTIFIER(B) .          { A.str = B->str; }
+expr(A) ::= PROPER_IDENTIFIER(B) .   { A.str = B->str; }

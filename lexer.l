@@ -32,6 +32,10 @@
                           yylval.sval = strdup(yytext);
                           return IDENTIFIER; }
  
+[A-Z][A-Za-z0-9]*       { col += (int) strlen(yytext);
+                          yylval.sval = strdup(yytext);
+                          return PROPER_IDENTIFIER; }
+
 [']                     {BEGIN(SINGLE_QUOTED);}
 <SINGLE_QUOTED>[^']+    {}
 <SINGLE_QUOTED>[']      {BEGIN(INITIAL); return STRING;}

@@ -3,6 +3,6 @@
 
 #include <string>
 
-void parse(const std::string& commandLine);
+int parse(const std::string& commandLine);
 
 #endif  // PARSE_H_
