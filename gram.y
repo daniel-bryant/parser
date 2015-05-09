@@ -2,7 +2,6 @@
 {
   #include <cassert>
   #include <iostream>
-  #include <math.h>
   #include "token.h"
 }
 
@@ -13,6 +12,7 @@
 
 %token_type {Token*}
 %type expr {Token}
+%type arg {Token}
 %extra_argument {bool* valid}
 
 %left PLUS MINUS .
@@ -25,21 +25,23 @@ start ::= expr(A) .                  { /*if (A.str)
                                        if (A.num)
                                          std::cout << "result: " << A.num << std::endl;*/ }
 
-expr(A) ::= expr(B) PLUS expr(C) .   { A.num = B.num + C.num; }
-expr(A) ::= expr(B) MINUS expr(C) .  { A.num = B.num - C.num; }
-expr(A) ::= expr(B) TIMES expr(C) .  { A.num = B.num * C.num; }
-expr(A) ::= expr(B) DIVIDE expr(C) . { if (C.num != 0)
-                                         A.num = B.num / C.num;
-                                       else
-                                         std::cerr << "Error: divide by zero!" << std::endl; }
-expr(A) ::= expr MODULO expr .       { A.num = 5; }
-expr(A) ::= expr POW expr .          { A.num = 6; }
-expr(A) ::= MINUS expr(B) . [LOWEST] { A.num = -B.num; }
+expr(A) ::= arg .                  { A.num = 3; }
 
-expr(A) ::= LPAREN expr(B) RPAREN .  { A.num = B.num; }
-expr(A) ::= LPAREN RPAREN .          { A.num = 0; }
+arg(A) ::= LPAREN arg(B) RPAREN .  { A.num = B.num; }
+arg(A) ::= LPAREN RPAREN .         { A.num = 0; }
 
-expr(A) ::= NUM(B) .                 { A.num = B->num; }
-expr ::= STRING .                    {}
-expr(A) ::= IDENTIFIER(B) .          { A.str = B->str; }
-expr(A) ::= PROPER_IDENTIFIER(B) .   { A.str = B->str; }
+arg(A) ::= arg(B) PLUS arg(C) .    { A.num = B.num + C.num; }
+arg(A) ::= arg(B) MINUS arg(C) .   { A.num = B.num - C.num; }
+arg(A) ::= arg(B) TIMES arg(C) .   { A.num = B.num * C.num; }
+arg(A) ::= arg(B) DIVIDE arg(C) .  { A.num = B.num / C.num; }
+arg(A) ::= arg(B) MODULO arg(C) .  { A.num = B.num * C.num; /*change*/}
+arg(A) ::= arg(B) POW arg(C) .     { A.num = B.num * C.num; /*change*/}
+arg(A) ::= MINUS arg(B) . [LOWEST] { A.num = -B.num; }
+
+arg(A) ::= NUM(B) .                { A.num = B->num; }
+
+
+
+arg ::= STRING .                   {}
+arg(A) ::= IDENTIFIER(B) .         { A.str = B->str; }
+arg(A) ::= PROPER_IDENTIFIER(B) .  { A.str = B->str; }
