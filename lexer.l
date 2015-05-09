@@ -12,6 +12,11 @@
  
 %%
 
+".."         {return DOT2;}
+"..."        {return DOT3;}
+"|"          {return PIPE;}
+"^"          {return CARET;}
+"&"          {return AMPER;}
 "+"          {return PLUS;}
 "-"          {return MINUS;}
 "*"          {return TIMES;}
