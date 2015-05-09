@@ -16,7 +16,8 @@
 "-"          {return MINUS;}
 "*"          {return TIMES;}
 "/"          {return DIVIDE;}
-"^"          {return EXP;}
+"%"          {return MODULO;}
+"**"         {return POW;}
 "("          {return LPAREN;}
 ")"          {return RPAREN;}
  

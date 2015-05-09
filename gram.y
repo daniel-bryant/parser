@@ -16,8 +16,9 @@
 %extra_argument {bool* valid}
 
 %left PLUS MINUS .
-%left TIMES DIVIDE .
-%right EXP .
+%left TIMES DIVIDE MODULO .
+%right POW .
+%right LOWEST .
 
 start ::= expr(A) .                  { /*if (A.str)
                                          std::cout << "variable: " << A.str << std::endl;
@@ -31,8 +32,9 @@ expr(A) ::= expr(B) DIVIDE expr(C) . { if (C.num != 0)
                                          A.num = B.num / C.num;
                                        else
                                          std::cerr << "Error: divide by zero!" << std::endl; }
-expr(A) ::= expr(B) EXP expr(C) .    { A.num = pow(B.num, C.num); }
-expr(A) ::= MINUS expr(B) . [EXP]    { A.num = -B.num; }
+expr(A) ::= expr MODULO expr .       { A.num = 5; }
+expr(A) ::= expr POW expr .          { A.num = 6; }
+expr(A) ::= MINUS expr(B) . [LOWEST] { A.num = -B.num; }
 
 expr(A) ::= LPAREN expr(B) RPAREN .  { A.num = B.num; }
 expr(A) ::= LPAREN RPAREN .          { A.num = 0; }

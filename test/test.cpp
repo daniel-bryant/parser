@@ -24,6 +24,10 @@ int main() {
 
   ExpectEQ(parse(std::string("2 - 2")), 1);
 
+  ExpectEQ(parse(std::string("2 % 2")), 1);
+
+  ExpectEQ(parse(std::string("2 ** 2")), 1);
+
   ExpectEQ(parse(std::string("-2")), 1);
 
   ExpectEQ(parse(std::string("(2 + 2)")), 1);
