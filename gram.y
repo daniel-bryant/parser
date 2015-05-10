@@ -17,11 +17,17 @@
 
 %nonassoc LOWEST .
 %nonassoc DOT2 DOT3 .
+%left OROP .
+%left ANDOP .
+%nonassoc  CMP EQ EQQ NEQ MATCH NMATCH .
+%left  GRT GEQ LST LEQ .
 %left PIPE CARET .
 %left AMPER .
+%left LSHFT RSHFT .
 %left PLUS MINUS .
 %left TIMES DIVIDE MODULO .
 %right POW .
+%right BANG TILDE .
 
 start ::= expr(A) .                  { /*if (A.str)
                                          std::cout << "variable: " << A.str << std::endl;
@@ -45,6 +51,22 @@ arg(A) ::= MINUS arg(B) . [LOWEST] { A.num = -B.num; }
 arg(A) ::= arg PIPE arg .          { A.num = 2 | 3; }
 arg(A) ::= arg CARET arg .         { A.num = 2 ^ 3; }
 arg(A) ::= arg AMPER arg .         { A.num = 2 & 3; }
+arg(A) ::= arg CMP arg .           { A.num = 1; }
+arg(A) ::= arg GRT arg .           { A.num = 1; }
+arg(A) ::= arg GEQ arg .           { A.num = 1; }
+arg(A) ::= arg LST arg .           { A.num = 1; }
+arg(A) ::= arg LEQ arg .           { A.num = 1; }
+arg(A) ::= arg EQ arg .            { A.num = 1; }
+arg(A) ::= arg EQQ arg .           { A.num = 1; }
+arg(A) ::= arg NEQ arg .           { A.num = 1; }
+arg(A) ::= arg MATCH arg .         { A.num = 1; }
+arg(A) ::= arg NMATCH arg .        { A.num = 1; }
+arg(A) ::= BANG arg .              { A.num = 1; }
+arg(A) ::= TILDE arg .             { A.num = 1; }
+arg(A) ::= arg LSHFT arg .         { A.num = 1; }
+arg(A) ::= arg RSHFT arg .         { A.num = 1; }
+arg(A) ::= arg ANDOP arg .         { A.num = 1; }
+arg(A) ::= arg OROP arg .          { A.num = 1; }
 
 arg(A) ::= NUM(B) .                { A.num = B->num; }
 

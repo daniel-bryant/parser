@@ -20,13 +20,11 @@ int main() {
 
   ExpectEQ(parse(std::string("2 + 2")), 1);
 
-  ExpectEQ(parse(std::string("2 + 2 + 2")), 1);
+  ExpectEQ(parse(std::string("2 - 2")), 1);
 
   ExpectEQ(parse(std::string("2 * 2")), 1);
 
   ExpectEQ(parse(std::string("2 / 2")), 1);
-
-  ExpectEQ(parse(std::string("2 - 2")), 1);
 
   ExpectEQ(parse(std::string("2 % 2")), 1);
 
@@ -38,9 +36,43 @@ int main() {
 
   ExpectEQ(parse(std::string("2 & 2")), 1);
 
+  ExpectEQ(parse(std::string("2 <=> 2")), 1);
+
+  ExpectEQ(parse(std::string("2 > 2")), 1);
+
+  ExpectEQ(parse(std::string("2 >= 2")), 1);
+
+  ExpectEQ(parse(std::string("2 < 2")), 1);
+
+  ExpectEQ(parse(std::string("2 <= 2")), 1);
+
+  ExpectEQ(parse(std::string("2 == 2")), 1);
+
+  ExpectEQ(parse(std::string("2 === 2")), 1);
+
+  ExpectEQ(parse(std::string("2 != 2")), 1);
+
+  ExpectEQ(parse(std::string("2 =~ 2")), 1);
+
+  ExpectEQ(parse(std::string("2 !~ 2")), 1);
+
+  ExpectEQ(parse(std::string("! 2")), 1);
+
+  ExpectEQ(parse(std::string("~ 2")), 1);
+
+  ExpectEQ(parse(std::string("2 << 2")), 1);
+
+  ExpectEQ(parse(std::string("2 >> 2")), 1);
+
+  ExpectEQ(parse(std::string("2 && 2")), 1);
+
+  ExpectEQ(parse(std::string("2 || 2")), 1);
+
   ExpectEQ(parse(std::string("-2")), 1);
 
   ExpectEQ(parse(std::string("(2 + 2)")), 1);
+
+  ExpectEQ(parse(std::string("2 + 2 + 2")), 1);
 
   ExpectEQ(parse(std::string("1 + 2 - 3 * 4 / 5")), 1);
 

@@ -14,15 +14,31 @@
 
 ".."         {return DOT2;}
 "..."        {return DOT3;}
-"|"          {return PIPE;}
-"^"          {return CARET;}
-"&"          {return AMPER;}
 "+"          {return PLUS;}
 "-"          {return MINUS;}
 "*"          {return TIMES;}
 "/"          {return DIVIDE;}
 "%"          {return MODULO;}
 "**"         {return POW;}
+"|"          {return PIPE;}
+"^"          {return CARET;}
+"&"          {return AMPER;}
+"<=>"        {return CMP;}
+">"          {return GRT;}
+">="         {return GEQ;}
+"<"          {return LST;}
+"<="         {return LEQ;}
+"=="         {return EQ;}
+"==="        {return EQQ;}
+"!="         {return NEQ;}
+"=~"         {return MATCH;}
+"!~"         {return NMATCH;}
+"!"          {return BANG;}
+"~"          {return TILDE;}
+"<<"         {return LSHFT;}
+">>"         {return RSHFT;}
+"&&"         {return ANDOP;}
+"||"         {return OROP;}
 "("          {return LPAREN;}
 ")"          {return RPAREN;}
  
