@@ -68,6 +68,14 @@ int main() {
 
   ExpectEQ(parse(std::string("2 || 2")), 1);
 
+  ExpectEQ(parse(std::string("defined? 2")), 1);
+
+  ExpectEQ(parse(std::string("defined?\n2")), 1);
+
+  ExpectEQ(parse(std::string("1 ? 2 : 3")), 1);
+
+  ExpectEQ(parse(std::string("4 ? 5 \n : 6")), 1);
+
   ExpectEQ(parse(std::string("-2")), 1);
 
   ExpectEQ(parse(std::string("(2 + 2)")), 1);

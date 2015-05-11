@@ -7,7 +7,7 @@
 #include "token.h"
 
 void* ParseAlloc(void* (*allocProc)(size_t));
-void Parse(void* parser, int token, Token* tokenInfo, bool* valid);
+void Parse(void* parser, int token, Token tokenInfo, bool* valid);
 void ParseFree(void* parser, void(*freeProc)(void*));
 YYSTYPE yylval;
 
@@ -26,10 +26,9 @@ int parse(const std::string& commandLine) {
   bool validParse = true;
   do {
     lexCode = yylex(scanner);
-    //cout << "lexCode: " << lexCode << ", yylval: " << yylval.dval << endl;
-    tokenInfo.num = yylval.dval;
     tokenInfo.str = yylval.sval;
-    Parse(gramParser, lexCode, &tokenInfo, &validParse);
+    tokenInfo.num = 123; // will be removed
+    Parse(gramParser, lexCode, tokenInfo, &validParse);
   }
   while (lexCode > 0 && validParse);
 

@@ -1,5 +1,4 @@
 struct Token {
   const char *str;
-  double num;
-  unsigned n;
+  int num; // will be removed
 };

@@ -10,12 +10,15 @@
   *valid = false;
 }
 
-%token_type {Token*}
+%token_type {Token}
 %type expr {Token}
 %type arg {Token}
 %extra_argument {bool* valid}
 
 %nonassoc LOWEST .
+
+%nonassoc KEYWORD_DEFINED .
+%right QUESTION COLON .
 %nonassoc DOT2 DOT3 .
 %left OROP .
 %left ANDOP .
@@ -67,11 +70,16 @@ arg(A) ::= arg LSHFT arg .         { A.num = 1; }
 arg(A) ::= arg RSHFT arg .         { A.num = 1; }
 arg(A) ::= arg ANDOP arg .         { A.num = 1; }
 arg(A) ::= arg OROP arg .          { A.num = 1; }
+arg(A) ::= KEYWORD_DEFINED opt_nl arg .        { A.num = 1; }
+arg(A) ::= arg QUESTION arg opt_nl COLON arg . { A.num = 1; }
 
-arg(A) ::= NUM(B) .                { A.num = B->num; }
+arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
+
+opt_nl ::= .                       {}
+opt_nl ::= NEWLINE .               {}
 
 
 
 arg ::= STRING .                   {}
-arg(A) ::= IDENTIFIER(B) .         { A.str = B->str; }
-arg(A) ::= PROPER_IDENTIFIER(B) .  { A.str = B->str; }
+arg(A) ::= IDENTIFIER(B) .         { A.str = B.str; }
+arg(A) ::= PROPER_IDENTIFIER(B) .  { A.str = B.str; }
