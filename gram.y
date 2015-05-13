@@ -32,10 +32,19 @@
 %right POW .
 %right BANG TILDE .
 
-start ::= expr(A) .                  { /*if (A.str)
-                                         std::cout << "variable: " << A.str << std::endl;
-                                       if (A.num)
-                                         std::cout << "result: " << A.num << std::endl;*/ }
+program ::= top_compstmt .                                 {}
+
+top_compstmt ::= top_stmts opt_terms .                     {}
+
+top_stmts ::= none .                                       {}
+top_stmts ::= top_stmt .                                   {}
+top_stmts ::= top_stmts terms top_stmt .                   {}
+/*top_stmts ::= error top_stmt . {}*/
+
+top_stmt ::= stmt .                                        {}
+top_stmt ::= KEYWORD_UP_BEGIN LBRACE top_compstmt RBRACE . {}
+
+stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }
 
@@ -75,9 +84,19 @@ arg(A) ::= arg QUESTION arg opt_nl COLON arg . { A.num = 1; }
 
 arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
 
+opt_terms ::= .                    {}
+opt_terms ::= terms .              {}
+
 opt_nl ::= .                       {}
 opt_nl ::= NEWLINE .               {}
 
+term ::= SEMICOLON .               {}
+term ::= NEWLINE .                 {}
+
+terms ::= term .                   {}
+terms ::= terms SEMICOLON .        {}
+
+none ::= .                         {}
 
 
 arg ::= STRING .                   {}

@@ -39,11 +39,15 @@
 ">>"         {return RSHFT;}
 "&&"         {return ANDOP;}
 "||"         {return OROP;}
+"BEGIN"      {return KEYWORD_UP_BEGIN;}
 "defined?"   {return KEYWORD_DEFINED;}
 "?"          {return QUESTION;}
 ":"          {return COLON;}
+";"          {return SEMICOLON;}
 "("          {return LPAREN;}
 ")"          {return RPAREN;}
+"{"          {return LBRACE;}
+"}"          {return RBRACE;}
  
 [ \t\r]                 { col += (int) strlen(yytext); } /* ignore but count white space*/
 

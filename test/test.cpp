@@ -14,6 +14,22 @@ void ExpectEQ(int actual, int expected) {
 int main() {
   std::cout << "Running tests...\n" << std::endl;
 
+  ExpectEQ(parse(std::string("")), 1);
+
+  ExpectEQ(parse(std::string("\n")), 1);
+
+  ExpectEQ(parse(std::string(";")), 1);
+
+  ExpectEQ(parse(std::string("\n;")), 1);
+
+  ExpectEQ(parse(std::string(";;;")), 1);
+
+  ExpectEQ(parse(std::string("2..2;")), 1);
+
+  ExpectEQ(parse(std::string("BEGIN { 2..2; }")), 1);
+
+  ExpectEQ(parse(std::string("2..2;BEGIN { 2..2; }\n")), 1);
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);
