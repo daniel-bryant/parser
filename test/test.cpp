@@ -52,6 +52,16 @@ int main() {
 
   ExpectEQ(parse(std::string("undef identifierFoo, identifierBar, _fidFoo, CONSTANTFOO")), 1);
 
+  ExpectEQ(parse(std::string("2 + 2 if 3 < 4")), 1);
+
+  ExpectEQ(parse(std::string("2 + 2 unless 1 == 1")), 1);
+
+  ExpectEQ(parse(std::string("2 + 2 while 100 >> 1")), 1);
+
+  ExpectEQ(parse(std::string("2 + 2 until 1 + 1")), 1);
+
+  ExpectEQ(parse(std::string("2 + 2 rescue 1 / 1")), 1);
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);

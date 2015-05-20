@@ -43,6 +43,11 @@
 "BEGIN"      {return KEYWORD_UP_BEGIN;}
 "defined?"   {return KEYWORD_DEFINED;}
 "undef"      {return KEYWORD_UNDEF;}
+"if"         {return MODIFIER_IF;}
+"unless"     {return MODIFIER_UNLESS;}
+"while"      {return MODIFIER_WHILE;}
+"until"      {return MODIFIER_UNTIL;}
+"rescue"     {return MODIFIER_RESCUE;}
 "?"          {return QUESTION;}
 ":"          {return COLON;}
 ";"          {return SEMICOLON;}

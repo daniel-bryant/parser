@@ -17,7 +17,9 @@
 
 %nonassoc LOWEST .
 
+%nonassoc  MODIFIER_IF MODIFIER_UNLESS MODIFIER_WHILE MODIFIER_UNTIL .
 %nonassoc KEYWORD_DEFINED .
+%left MODIFIER_RESCUE .
 %right QUESTION COLON .
 %nonassoc DOT2 DOT3 .
 %left OROP .
@@ -49,9 +51,16 @@ stmt ::= KEYWORD_ALIAS GVAR GVAR .                         {}
 /*stmt ::= KEYWORD_ALIAS GVAR BACK_REF .                     {}*/
 /*stmt ::= KEYWORD_ALIAS GVAR NTH_REF .                      {}*/
 stmt ::= KEYWORD_UNDEF undef_list .                        {}
+stmt ::= stmt MODIFIER_IF expr_value .                     {}
+stmt ::= stmt MODIFIER_UNLESS expr_value .                 {}
+stmt ::= stmt MODIFIER_WHILE expr_value .                  {}
+stmt ::= stmt MODIFIER_UNTIL expr_value .                  {}
+stmt ::= stmt MODIFIER_RESCUE stmt .                       {}
 stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }
+
+expr_value ::= expr .              {}
 
 fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
