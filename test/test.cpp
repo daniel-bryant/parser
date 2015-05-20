@@ -30,6 +30,18 @@ int main() {
 
   ExpectEQ(parse(std::string("2..2;BEGIN { 2..2; }\n")), 1);
 
+  ExpectEQ(parse(std::string("alias identifierFoo identifierBar")), 1);
+
+  ExpectEQ(parse(std::string("alias _fidFoo _fidBar")), 1);
+
+  ExpectEQ(parse(std::string("alias CONSTANTFOO CONSTANTBAR")), 1);
+
+  ExpectEQ(parse(std::string("alias identifierFoo _fidBar")), 1);
+
+  ExpectEQ(parse(std::string("alias _fidFoo CONSTANTBAR")), 1);
+
+  ExpectEQ(parse(std::string("alias CONSTANTFOO identifierBar")), 1);
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);
@@ -104,6 +116,7 @@ int main() {
 
   ExpectEQ(parse(std::string("()")), 1);
 
+  /* lone identifiers and constants are not valid yet
   ExpectEQ(parse(std::string("a")), 1);
 
   ExpectEQ(parse(std::string("aaaaa")), 1);
@@ -112,7 +125,7 @@ int main() {
 
   ExpectEQ(parse(std::string("F")), 1);
 
-  ExpectEQ(parse(std::string("Foo")), 1);
+  ExpectEQ(parse(std::string("Foo")), 1);*/
 
   std::cout << "\n\nFinished." << std::endl;
 

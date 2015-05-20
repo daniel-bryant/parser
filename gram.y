@@ -44,9 +44,22 @@ top_stmts ::= top_stmts terms top_stmt .                   {}
 top_stmt ::= stmt .                                        {}
 top_stmt ::= KEYWORD_UP_BEGIN LBRACE top_compstmt RBRACE . {}
 
+stmt ::= KEYWORD_ALIAS fitem fitem .                       {}
 stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }
+
+fname ::= IDENTIFIER .             {}
+fname ::= CONSTANT .               {}
+fname ::= FID .                    {}
+/*fname ::= op .                     {}*/
+/*fname ::= reswords .               {}*/
+
+fsym ::= fname .                   {}
+/*fsym ::= symbol .                  {}*/
+
+fitem ::= fsym .                   {}
+/*fitem ::= dsym .                   {}*/
 
 arg(A) ::= LPAREN arg(B) RPAREN .  { A.num = B.num; }
 arg(A) ::= LPAREN RPAREN .         { A.num = 0; }
@@ -100,5 +113,3 @@ none ::= .                         {}
 
 
 arg ::= STRING .                   {}
-arg(A) ::= IDENTIFIER(B) .         { A.str = B.str; }
-arg(A) ::= PROPER_IDENTIFIER(B) .  { A.str = B.str; }

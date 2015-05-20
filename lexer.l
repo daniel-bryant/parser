@@ -39,6 +39,7 @@
 ">>"         {return RSHFT;}
 "&&"         {return ANDOP;}
 "||"         {return OROP;}
+"alias"      {return KEYWORD_ALIAS;}
 "BEGIN"      {return KEYWORD_UP_BEGIN;}
 "defined?"   {return KEYWORD_DEFINED;}
 "?"          {return QUESTION;}
@@ -61,9 +62,13 @@
                           yylval.sval = strdup(yytext);
                           return IDENTIFIER; }
  
+_[a-z][A-Za-z0-9]*       { col += (int) strlen(yytext);
+                          yylval.sval = strdup(yytext);
+                          return FID; }
+
 [A-Z][A-Za-z0-9]*       { col += (int) strlen(yytext);
                           yylval.sval = strdup(yytext);
-                          return PROPER_IDENTIFIER; }
+                          return CONSTANT; }
 
 [']                     {BEGIN(SINGLE_QUOTED);}
 <SINGLE_QUOTED>[^']+    {}
