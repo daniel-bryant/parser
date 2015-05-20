@@ -41,6 +41,7 @@
 "||"         {return OROP;}
 "alias"      {return KEYWORD_ALIAS;}
 "BEGIN"      {return KEYWORD_UP_BEGIN;}
+"END"        {return KEYWORD_UP_END;}
 "defined?"   {return KEYWORD_DEFINED;}
 "undef"      {return KEYWORD_UNDEF;}
 "if"         {return MODIFIER_IF;}

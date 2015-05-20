@@ -62,6 +62,8 @@ int main() {
 
   ExpectEQ(parse(std::string("2 + 2 rescue 1 / 1")), 1);
 
+  ExpectEQ(parse(std::string("END { 2 + 2 }")), 1);
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);

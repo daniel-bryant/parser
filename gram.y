@@ -56,6 +56,7 @@ stmt ::= stmt MODIFIER_UNLESS expr_value .                 {}
 stmt ::= stmt MODIFIER_WHILE expr_value .                  {}
 stmt ::= stmt MODIFIER_UNTIL expr_value .                  {}
 stmt ::= stmt MODIFIER_RESCUE stmt .                       {}
+stmt ::= KEYWORD_UP_END LBRACE top_compstmt RBRACE .       {}
 stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }
