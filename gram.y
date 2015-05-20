@@ -45,6 +45,9 @@ top_stmt ::= stmt .                                        {}
 top_stmt ::= KEYWORD_UP_BEGIN LBRACE top_compstmt RBRACE . {}
 
 stmt ::= KEYWORD_ALIAS fitem fitem .                       {}
+stmt ::= KEYWORD_ALIAS GVAR GVAR .                         {}
+/*stmt ::= KEYWORD_ALIAS GVAR BACK_REF .                     {}*/
+/*stmt ::= KEYWORD_ALIAS GVAR NTH_REF .                      {}*/
 stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }

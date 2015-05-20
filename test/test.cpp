@@ -42,6 +42,10 @@ int main() {
 
   ExpectEQ(parse(std::string("alias CONSTANTFOO identifierBar")), 1);
 
+  ExpectEQ(parse(std::string("alias $global $global")), 1);
+
+  ExpectEQ(parse(std::string("alias $globalFoo $globarBar")), 1);
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);

@@ -66,6 +66,10 @@ _[a-z][A-Za-z0-9]*       { col += (int) strlen(yytext);
                           yylval.sval = strdup(yytext);
                           return FID; }
 
+\$[a-z][A-Za-z0-9]*       { col += (int) strlen(yytext);
+                          yylval.sval = strdup(yytext);
+                          return GVAR; }
+
 [A-Z][A-Za-z0-9]*       { col += (int) strlen(yytext);
                           yylval.sval = strdup(yytext);
                           return CONSTANT; }
