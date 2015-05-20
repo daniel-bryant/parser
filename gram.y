@@ -48,6 +48,7 @@ stmt ::= KEYWORD_ALIAS fitem fitem .                       {}
 stmt ::= KEYWORD_ALIAS GVAR GVAR .                         {}
 /*stmt ::= KEYWORD_ALIAS GVAR BACK_REF .                     {}*/
 /*stmt ::= KEYWORD_ALIAS GVAR NTH_REF .                      {}*/
+stmt ::= KEYWORD_UNDEF undef_list .                        {}
 stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }
@@ -63,6 +64,9 @@ fsym ::= fname .                   {}
 
 fitem ::= fsym .                   {}
 /*fitem ::= dsym .                   {}*/
+
+undef_list ::= fitem .                                     {}
+undef_list ::= undef_list COMMA fitem .                    {}
 
 arg(A) ::= LPAREN arg(B) RPAREN .  { A.num = B.num; }
 arg(A) ::= LPAREN RPAREN .         { A.num = 0; }

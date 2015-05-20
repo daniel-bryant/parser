@@ -46,6 +46,12 @@ int main() {
 
   ExpectEQ(parse(std::string("alias $globalFoo $globarBar")), 1);
 
+  ExpectEQ(parse(std::string("undef identifierFoo")), 1);
+
+  ExpectEQ(parse(std::string("undef identifierFoo, identifierBar")), 1);
+
+  ExpectEQ(parse(std::string("undef identifierFoo, identifierBar, _fidFoo, CONSTANTFOO")), 1);
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);

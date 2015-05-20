@@ -42,6 +42,7 @@
 "alias"      {return KEYWORD_ALIAS;}
 "BEGIN"      {return KEYWORD_UP_BEGIN;}
 "defined?"   {return KEYWORD_DEFINED;}
+"undef"      {return KEYWORD_UNDEF;}
 "?"          {return QUESTION;}
 ":"          {return COLON;}
 ";"          {return SEMICOLON;}
@@ -49,6 +50,7 @@
 ")"          {return RPAREN;}
 "{"          {return LBRACE;}
 "}"          {return RBRACE;}
+","          {return COMMA;}
  
 [ \t\r]                 { col += (int) strlen(yytext); } /* ignore but count white space*/
 
