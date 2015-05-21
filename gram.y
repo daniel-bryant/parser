@@ -65,6 +65,7 @@ expr(A) ::= arg .                  { A.num = 3; }
 expr_value ::= expr .              {}
 
 lhs ::= user_variable .            {}
+lhs ::= keyword_variable .         {}
 
 fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
@@ -120,6 +121,18 @@ arg(A) ::= arg QUESTION arg opt_nl COLON arg . { A.num = 1; }
 arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
 
 user_variable ::= IDENTIFIER .     {}
+user_variable ::= IVAR .           {}
+user_variable ::= GVAR .           {}
+user_variable ::= CONSTANT .       {}
+user_variable ::= CVAR .           {}
+
+keyword_variable ::= KEYWORD_NIL .         {}
+keyword_variable ::= KEYWORD_SELF .        {}
+keyword_variable ::= KEYWORD_TRUE .        {}
+keyword_variable ::= KEYWORD_FALSE .       {}
+keyword_variable ::= KEYWORD__FILE__ .     {}
+keyword_variable ::= KEYWORD__LINE__ .     {}
+keyword_variable ::= KEYWORD__ENCODING__ . {}
 
 opt_terms ::= .                    {}
 opt_terms ::= terms .              {}

@@ -44,6 +44,13 @@
 "END"        {return KEYWORD_UP_END;}
 "defined?"   {return KEYWORD_DEFINED;}
 "undef"      {return KEYWORD_UNDEF;}
+"nil"        {return KEYWORD_NIL;}
+"self"       {return KEYWORD_SELF;}
+"true"       {return KEYWORD_TRUE;}
+"false"      {return KEYWORD_FALSE;}
+"__FILE__"   {return KEYWORD__FILE__;}
+"__LINE__"   {return KEYWORD__LINE__;}
+"__ENCODING__" {return KEYWORD__ENCODING__;}
 "if"         {return MODIFIER_IF;}
 "unless"     {return MODIFIER_UNLESS;}
 "while"      {return MODIFIER_WHILE;}
@@ -78,6 +85,14 @@ _[a-z][A-Za-z0-9]*       { col += (int) strlen(yytext);
 \$[a-z][A-Za-z0-9]*       { col += (int) strlen(yytext);
                           yylval.sval = strdup(yytext);
                           return GVAR; }
+
+@@[a-z][A-Za-z0-9]*       { col += (int) strlen(yytext);
+                          yylval.sval = strdup(yytext);
+                          return CVAR; }
+
+@[a-z][A-Za-z0-9]*       { col += (int) strlen(yytext);
+                          yylval.sval = strdup(yytext);
+                          return IVAR; }
 
 [A-Z][A-Za-z0-9]*       { col += (int) strlen(yytext);
                           yylval.sval = strdup(yytext);
