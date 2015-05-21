@@ -64,6 +64,14 @@ int main() {
 
   ExpectEQ(parse(std::string("END { 2 + 2 }")), 1);
 
+  ExpectEQ(parse(std::string("identifierFoo = 1 + 1")), 1);
+
+  ExpectEQ(parse(std::string("identifierFoo = 1")), 1);
+
+  ExpectEQ(parse(std::string("identifierFoo = 1 rescue 0")), 1); // stmt <= expr <= arg <= lhs EQUALS arg MODIFIER_RESCUE arg
+
+  ExpectEQ(parse(std::string("identifierFoo = 1 rescue 0 rescue 0")), 1); // stmt MODIFIER_RESCUE stmt
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);

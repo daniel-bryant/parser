@@ -19,6 +19,7 @@
 
 %nonassoc  MODIFIER_IF MODIFIER_UNLESS MODIFIER_WHILE MODIFIER_UNTIL .
 %nonassoc KEYWORD_DEFINED .
+%right EQUALS .
 %left MODIFIER_RESCUE .
 %right QUESTION COLON .
 %nonassoc DOT2 DOT3 .
@@ -63,6 +64,8 @@ expr(A) ::= arg .                  { A.num = 3; }
 
 expr_value ::= expr .              {}
 
+lhs ::= user_variable .            {}
+
 fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
 fname ::= FID .                    {}
@@ -81,6 +84,8 @@ undef_list ::= undef_list COMMA fitem .                    {}
 arg(A) ::= LPAREN arg(B) RPAREN .  { A.num = B.num; }
 arg(A) ::= LPAREN RPAREN .         { A.num = 0; }
 
+arg(A) ::= lhs EQUALS arg .        { A.num = 1; }
+arg(A) ::= lhs EQUALS arg MODIFIER_RESCUE arg . { A.num = 2; }
 arg(A) ::= arg(B) DOT2 arg(C) .    { A.num = B.num + C.num; /*change*/ }
 arg(A) ::= arg(B) DOT3 arg(C) .    { A.num = B.num + C.num; /*change*/ }
 arg(A) ::= arg(B) PLUS arg(C) .    { A.num = B.num + C.num; }
@@ -113,6 +118,8 @@ arg(A) ::= KEYWORD_DEFINED opt_nl arg .        { A.num = 1; }
 arg(A) ::= arg QUESTION arg opt_nl COLON arg . { A.num = 1; }
 
 arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
+
+user_variable ::= IDENTIFIER .     {}
 
 opt_terms ::= .                    {}
 opt_terms ::= terms .              {}

@@ -57,6 +57,7 @@
 "{"          {return LBRACE;}
 "}"          {return RBRACE;}
 ","          {return COMMA;}
+"="          {return EQUALS;}
  
 [ \t\r]                 { col += (int) strlen(yytext); } /* ignore but count white space*/
 
