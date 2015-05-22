@@ -12,6 +12,7 @@
  
 %%
 
+"."          {return DOT;}
 ".."         {return DOT2;}
 "..."        {return DOT3;}
 "+"          {return PLUS;}
@@ -58,6 +59,8 @@
 "rescue"     {return MODIFIER_RESCUE;}
 "?"          {return QUESTION;}
 ":"          {return COLON;}
+"::"         {return COLON2;}
+":::"        {return COLON3;}
 ";"          {return SEMICOLON;}
 "("          {return LPAREN;}
 ")"          {return RPAREN;}

@@ -88,6 +88,20 @@ int main() {
 
   ExpectEQ(parse(std::string("__ENCODING__ = 1")), 1);
 
+  ExpectEQ(parse(std::string("")), 1); // lhs ::= primary_value '[' opt_call_args rbracket TODO
+
+  ExpectEQ(parse(std::string(":::CONSTANTFOO.identifierBar = 1")), 1); // lhs ::= primary_value DOT IDENTIFIER
+
+  ExpectEQ(parse(std::string(":::CONSTANTFOO::identifierBar = 1")), 1); // lhs ::= primary_value COLON2 IDENTIFIER
+
+  ExpectEQ(parse(std::string(":::CONSTANTFOO.CONSTANTBAR = 1")), 1); // lhs ::= primary_value DOT CONSTANT
+
+  ExpectEQ(parse(std::string(":::CONSTANTFOO::CONSTANTBAR = 1")), 1); // lhs ::= primary_value COLON2 CONSTANT
+
+  ExpectEQ(parse(std::string(":::CONSTANTFOO = 1")), 1); // lhs ::= COLON3 CONSTANT
+
+  ExpectEQ(parse(std::string("")), 1); // lhs ::= backref TODO
+
   ExpectEQ(parse(std::string("identifierFoo = 1 + 1")), 1);
 
   ExpectEQ(parse(std::string("identifierFoo = 1 rescue 0")), 1); // stmt <= expr <= arg <= lhs EQUALS arg MODIFIER_RESCUE arg

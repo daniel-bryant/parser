@@ -66,6 +66,13 @@ expr_value ::= expr .              {}
 
 lhs ::= user_variable .            {}
 lhs ::= keyword_variable .         {}
+/*lhs ::= primary_value '[' opt_call_args rbracket . {}*/
+lhs ::= primary_value DOT IDENTIFIER .             {}
+lhs ::= primary_value COLON2 IDENTIFIER .          {}
+lhs ::= primary_value DOT CONSTANT .               {}
+lhs ::= primary_value COLON2 CONSTANT .            {}
+lhs ::= COLON3 CONSTANT .                          {}
+/*lhs ::= backref .                                  {}*/
 
 fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
@@ -119,6 +126,10 @@ arg(A) ::= KEYWORD_DEFINED opt_nl arg .        { A.num = 1; }
 arg(A) ::= arg QUESTION arg opt_nl COLON arg . { A.num = 1; }
 
 arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
+
+primary ::= COLON3 CONSTANT .      {}
+
+primary_value ::= primary .        {}
 
 user_variable ::= IDENTIFIER .     {}
 user_variable ::= IVAR .           {}
