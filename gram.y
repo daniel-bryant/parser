@@ -49,8 +49,8 @@ top_stmt ::= KEYWORD_UP_BEGIN LBRACE top_compstmt RBRACE . {}
 
 stmt ::= KEYWORD_ALIAS fitem fitem .                       {}
 stmt ::= KEYWORD_ALIAS GVAR GVAR .                         {}
-/*stmt ::= KEYWORD_ALIAS GVAR BACK_REF .                     {}*/
-/*stmt ::= KEYWORD_ALIAS GVAR NTH_REF .                      {}*/
+stmt ::= KEYWORD_ALIAS GVAR BACK_REF .                     {}
+stmt ::= KEYWORD_ALIAS GVAR NTH_REF .                      {}
 stmt ::= KEYWORD_UNDEF undef_list .                        {}
 stmt ::= stmt MODIFIER_IF expr_value .                     {}
 stmt ::= stmt MODIFIER_UNLESS expr_value .                 {}

@@ -46,6 +46,32 @@ int main() {
 
   ExpectEQ(parse(std::string("alias $globalFoo $globarBar")), 1);
 
+  ExpectEQ(parse(std::string("alias $global $&")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $`")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $'")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $+")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $1")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $2")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $3")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $4")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $5")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $6")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $7")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $8")), 1);
+
+  ExpectEQ(parse(std::string("alias $global $9")), 1);
+
   ExpectEQ(parse(std::string("undef identifierFoo")), 1);
 
   ExpectEQ(parse(std::string("undef identifierFoo, identifierBar")), 1);

@@ -74,6 +74,19 @@
 "}"          {return RBRACE;}
 ","          {return COMMA;}
 "="          {return EQUALS;}
+"$&"         {return BACK_REF;}
+"$`"         {return BACK_REF;}
+"$'"         {return BACK_REF;}
+"$+"         {return BACK_REF;}
+"$1"         {return NTH_REF;}
+"$2"         {return NTH_REF;}
+"$3"         {return NTH_REF;}
+"$4"         {return NTH_REF;}
+"$5"         {return NTH_REF;}
+"$6"         {return NTH_REF;}
+"$7"         {return NTH_REF;}
+"$8"         {return NTH_REF;}
+"$9"         {return NTH_REF;}
  
 [ \t\r]                 { col += (int) strlen(yytext); } /* ignore but count white space*/
 
