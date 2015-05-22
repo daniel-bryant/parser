@@ -108,6 +108,32 @@ int main() {
 
   ExpectEQ(parse(std::string("identifierFoo = 1 rescue 0 rescue 0")), 1); // stmt MODIFIER_RESCUE stmt
 
+  ExpectEQ(parse(std::string("identifierFoo += 1")), 1);
+
+  ExpectEQ(parse(std::string("@instanceVarFoo -= 1")), 1);
+
+  ExpectEQ(parse(std::string("$globalVarFoo *= 1")), 1);
+
+  ExpectEQ(parse(std::string("ConstantFoo /= 1")), 1);
+
+  ExpectEQ(parse(std::string("@@classVarFoo %= 1")), 1);
+
+  ExpectEQ(parse(std::string("nil **= 1")), 1);
+
+  ExpectEQ(parse(std::string("self += 1")), 1);
+
+  ExpectEQ(parse(std::string("true -= 1")), 1);
+
+  ExpectEQ(parse(std::string("false *= 1")), 1);
+
+  ExpectEQ(parse(std::string("__FILE__ /= 1")), 1);
+
+  ExpectEQ(parse(std::string("__LINE__ %= 1")), 1);
+
+  ExpectEQ(parse(std::string("__ENCODING__ **= 1")), 1);
+
+  ExpectEQ(parse(std::string("identifierFoo += 1 rescue 0")), 1);
+
   ExpectEQ(parse(std::string("2..2")), 1);
 
   ExpectEQ(parse(std::string("2...2")), 1);

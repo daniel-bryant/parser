@@ -19,7 +19,7 @@
 
 %nonassoc  MODIFIER_IF MODIFIER_UNLESS MODIFIER_WHILE MODIFIER_UNTIL .
 %nonassoc KEYWORD_DEFINED .
-%right EQUALS .
+%right EQUALS OP_ASGN .
 %left MODIFIER_RESCUE .
 %right QUESTION COLON .
 %nonassoc DOT2 DOT3 .
@@ -94,6 +94,8 @@ arg(A) ::= LPAREN RPAREN .         { A.num = 0; }
 
 arg(A) ::= lhs EQUALS arg .        { A.num = 1; }
 arg(A) ::= lhs EQUALS arg MODIFIER_RESCUE arg . { A.num = 2; }
+arg(A) ::= var_lhs OP_ASGN arg .                     { A.num = 3; }
+arg(A) ::= var_lhs OP_ASGN arg MODIFIER_RESCUE arg . { A.num = 4; }
 arg(A) ::= arg(B) DOT2 arg(C) .    { A.num = B.num + C.num; /*change*/ }
 arg(A) ::= arg(B) DOT3 arg(C) .    { A.num = B.num + C.num; /*change*/ }
 arg(A) ::= arg(B) PLUS arg(C) .    { A.num = B.num + C.num; }
@@ -144,6 +146,9 @@ keyword_variable ::= KEYWORD_FALSE .       {}
 keyword_variable ::= KEYWORD__FILE__ .     {}
 keyword_variable ::= KEYWORD__LINE__ .     {}
 keyword_variable ::= KEYWORD__ENCODING__ . {}
+
+var_lhs ::= user_variable .        {}
+var_lhs ::= keyword_variable .     {}
 
 opt_terms ::= .                    {}
 opt_terms ::= terms .              {}

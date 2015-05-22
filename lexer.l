@@ -21,6 +21,12 @@
 "/"          {return DIVIDE;}
 "%"          {return MODULO;}
 "**"         {return POW;}
+"+="         {return OP_ASGN;}
+"-="         {return OP_ASGN;}
+"*="         {return OP_ASGN;}
+"/="         {return OP_ASGN;}
+"%="         {return OP_ASGN;}
+"**="        {return OP_ASGN;}
 "|"          {return PIPE;}
 "^"          {return CARET;}
 "&"          {return AMPER;}
