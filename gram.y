@@ -77,7 +77,7 @@ lhs ::= backref .                                  {}
 fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
 fname ::= FID .                    {}
-/*fname ::= op .                     {}*/
+fname ::= op .                     {}
 /*fname ::= reswords .               {}*/
 
 fsym ::= fname .                   {}
@@ -88,6 +88,37 @@ fitem ::= fsym .                   {}
 
 undef_list ::= fitem .                                     {}
 undef_list ::= undef_list COMMA fitem .                    {}
+
+op ::= PIPE .     {}
+op ::= CARET .    {}
+op ::= AMPER .    {}
+op ::= CMP .      {}
+op ::= EQ .       {}
+op ::= EQQ .      {}
+op ::= MATCH .    {}
+op ::= NMATCH .   {}
+op ::= GRT .      {}
+op ::= GEQ .      {}
+op ::= LST .      {}
+op ::= LEQ .      {}
+op ::= NEQ .      {}
+op ::= LSHFT .    {}
+op ::= RSHFT .    {}
+op ::= PLUS .     {}
+op ::= MINUS .    {}
+op ::= TIMES .    {}
+/*op ::= STAR .     {}*/
+op ::= DIVIDE .   {}
+op ::= MODULO .   {}
+op ::= POW .      {}
+/*op ::= DSTAR .    {}*/
+op ::= BANG .     {}
+op ::= TILDE .    {}
+/*op ::= UPLUS .    {}*/
+/*op ::= UMINUS .   {}*/
+op ::= AREF .     {}
+op ::= ASET .     {}
+op ::= BACKTICK . {}
 
 arg(A) ::= LPAREN arg(B) RPAREN .  { A.num = B.num; }
 arg(A) ::= LPAREN RPAREN .         { A.num = 0; }

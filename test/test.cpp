@@ -42,6 +42,10 @@ int main() {
 
   ExpectEQ(parse(std::string("alias CONSTANTFOO identifierBar")), 1);
 
+  ExpectEQ(parse(std::string("alias | ^")), 1); // not testing all ops
+
+  ExpectEQ(parse(std::string("alias & <=>")), 1); // not testing all ops
+
   ExpectEQ(parse(std::string("alias $global $global")), 1);
 
   ExpectEQ(parse(std::string("alias $globalFoo $globarBar")), 1);
@@ -77,6 +81,8 @@ int main() {
   ExpectEQ(parse(std::string("undef identifierFoo, identifierBar")), 1);
 
   ExpectEQ(parse(std::string("undef identifierFoo, identifierBar, _fidFoo, CONSTANTFOO")), 1);
+
+  ExpectEQ(parse(std::string("undef <, <=, >, >=, <<, >>, `, [], []=")), 1); // not testing all ops
 
   ExpectEQ(parse(std::string("2 + 2 if 3 < 4")), 1);
 

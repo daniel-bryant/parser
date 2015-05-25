@@ -74,6 +74,9 @@
 "}"          {return RBRACE;}
 ","          {return COMMA;}
 "="          {return EQUALS;}
+"[]"         {return AREF;}
+"[]="        {return ASET;}
+"`"          {return BACKTICK;}
 "$&"         {return BACK_REF;}
 "$`"         {return BACK_REF;}
 "$'"         {return BACK_REF;}
