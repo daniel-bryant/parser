@@ -126,7 +126,9 @@ int main() {
 
   ExpectEQ(parse(std::string(":::CONSTANTFOO = 1")), 1); // lhs ::= COLON3 CONSTANT
 
-  ExpectEQ(parse(std::string("")), 1); // lhs ::= backref TODO
+  ExpectEQ(parse(std::string("$1 = 1")), 1); // lhs ::= backref // backref ::= NTH_REF
+
+  ExpectEQ(parse(std::string("$& = 1")), 1); // lhs ::= backref // backref ::= BACK_REF
 
   ExpectEQ(parse(std::string("identifierFoo = 1 + 1")), 1);
 

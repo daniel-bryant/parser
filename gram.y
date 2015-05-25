@@ -72,7 +72,7 @@ lhs ::= primary_value COLON2 IDENTIFIER .          {}
 lhs ::= primary_value DOT CONSTANT .               {}
 lhs ::= primary_value COLON2 CONSTANT .            {}
 lhs ::= COLON3 CONSTANT .                          {}
-/*lhs ::= backref .                                  {}*/
+lhs ::= backref .                                  {}
 
 fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
@@ -149,6 +149,9 @@ keyword_variable ::= KEYWORD__ENCODING__ . {}
 
 var_lhs ::= user_variable .        {}
 var_lhs ::= keyword_variable .     {}
+
+backref ::= NTH_REF .              {}
+backref ::= BACK_REF .             {}
 
 opt_terms ::= .                    {}
 opt_terms ::= terms .              {}
