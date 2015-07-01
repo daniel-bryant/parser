@@ -76,6 +76,46 @@ int main() {
 
   ExpectEQ(parse(std::string("alias $global $9")), 1);
 
+  std::string reswords[21][2] = {
+    {std::string("__LINE__"),     std::string("module")},
+    {std::string("__FILE__"),     std::string("next")},
+    {std::string("__ENCODING__"), std::string("nil")},
+    {std::string("BEGIN"),        std::string("not")},
+    {std::string("END"),          std::string("or")},
+    {std::string("alias"),        std::string("redo")},
+    {std::string("and"),          std::string("rescue")},
+    {std::string("begin"),        std::string("retry")},
+    {std::string("break"),        std::string("return")},
+    {std::string("case"),         std::string("self")},
+    {std::string("class"),        std::string("super")},
+    {std::string("def"),          std::string("then")},
+    {std::string("defined?"),     std::string("true")},
+    {std::string("do"),           std::string("undef")},
+    {std::string("else"),         std::string("when")},
+    {std::string("elsif"),        std::string("yield")},
+    {std::string("end"),          std::string("if")},
+    {std::string("ensure"),       std::string("unless")},
+    {std::string("false"),        std::string("while")},
+    {std::string("for"),          std::string("until")},
+    {std::string("in"),           std::string("until")},
+  };
+  std::string space = std::string(" ");
+
+  // KEYWORD_alias fitem fitem; fitem ::= fsym; fsym ::= fname; fname ::= reswords
+  std::string alias = std::string("alias");
+  for (int i=0; i<21; ++i) {
+    // ex. alias BEGIN END
+    ExpectEQ(parse(alias + space + reswords[i][0] + space + reswords[i][1]), 1);
+  }
+
+  // KEYWORD_undef undef_list; undef_list ::= fitem; fitem ::= fsym; fsym ::= fname; fname ::= reswords
+  std::string undef = std::string("undef");
+  for (int i=0; i<21; i++) {
+    // ex undef BEGIN
+    ExpectEQ(parse(undef + space + reswords[i][0]), 1);
+    ExpectEQ(parse(undef + space + reswords[i][1]), 1);
+  }
+
   ExpectEQ(parse(std::string("undef identifierFoo")), 1);
 
   ExpectEQ(parse(std::string("undef identifierFoo, identifierBar")), 1);
@@ -84,15 +124,15 @@ int main() {
 
   ExpectEQ(parse(std::string("undef <, <=, >, >=, <<, >>, `, [], []=")), 1); // not testing all ops
 
-  ExpectEQ(parse(std::string("2 + 2 if 3 < 4")), 1);
+  ExpectEQ(parse(std::string("2 + 2 _if_ 3 < 4")), 1);
 
-  ExpectEQ(parse(std::string("2 + 2 unless 1 == 1")), 1);
+  ExpectEQ(parse(std::string("2 + 2 _unless_ 1 == 1")), 1);
 
-  ExpectEQ(parse(std::string("2 + 2 while 100 >> 1")), 1);
+  ExpectEQ(parse(std::string("2 + 2 _while_ 100 >> 1")), 1);
 
-  ExpectEQ(parse(std::string("2 + 2 until 1 + 1")), 1);
+  ExpectEQ(parse(std::string("2 + 2 _until_ 1 + 1")), 1);
 
-  ExpectEQ(parse(std::string("2 + 2 rescue 1 / 1")), 1);
+  ExpectEQ(parse(std::string("2 + 2 _rescue_ 1 / 1")), 1);
 
   ExpectEQ(parse(std::string("END { 2 + 2 }")), 1);
 
@@ -138,9 +178,9 @@ int main() {
 
   ExpectEQ(parse(std::string("identifierFoo = 1 + 1")), 1);
 
-  ExpectEQ(parse(std::string("identifierFoo = 1 rescue 0")), 1); // stmt <= expr <= arg <= lhs EQUALS arg MODIFIER_RESCUE arg
+  ExpectEQ(parse(std::string("identifierFoo = 1 _rescue_ 0")), 1); // stmt <= expr <= arg <= lhs EQUALS arg MODIFIER_RESCUE arg
 
-  ExpectEQ(parse(std::string("identifierFoo = 1 rescue 0 rescue 0")), 1); // stmt MODIFIER_RESCUE stmt
+  ExpectEQ(parse(std::string("identifierFoo = 1 _rescue_ 0 _rescue_ 0")), 1); // stmt MODIFIER_RESCUE stmt
 
   ExpectEQ(parse(std::string("identifierFoo += 1")), 1);
 
@@ -166,7 +206,7 @@ int main() {
 
   ExpectEQ(parse(std::string("__ENCODING__ **= 1")), 1);
 
-  ExpectEQ(parse(std::string("identifierFoo += 1 rescue 0")), 1);
+  ExpectEQ(parse(std::string("identifierFoo += 1 _rescue_ 0")), 1);
 
   ExpectEQ(parse(std::string("2..2")), 1);
 

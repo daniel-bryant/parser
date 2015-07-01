@@ -17,10 +17,10 @@
 
 %nonassoc LOWEST .
 
-%nonassoc  MODIFIER_IF MODIFIER_UNLESS MODIFIER_WHILE MODIFIER_UNTIL .
-%nonassoc KEYWORD_DEFINED .
+%nonassoc  MODIFIER_if MODIFIER_unless MODIFIER_while MODIFIER_until .
+%nonassoc KEYWORD_defined .
 %right EQUALS OP_ASGN .
-%left MODIFIER_RESCUE .
+%left MODIFIER_rescue .
 %right QUESTION COLON .
 %nonassoc DOT2 DOT3 .
 %left OROP .
@@ -45,19 +45,19 @@ top_stmts ::= top_stmts terms top_stmt .                   {}
 /*top_stmts ::= error top_stmt . {}*/
 
 top_stmt ::= stmt .                                        {}
-top_stmt ::= KEYWORD_UP_BEGIN LBRACE top_compstmt RBRACE . {}
+top_stmt ::= KEYWORD_BEGIN LBRACE top_compstmt RBRACE .    {}
 
-stmt ::= KEYWORD_ALIAS fitem fitem .                       {}
-stmt ::= KEYWORD_ALIAS GVAR GVAR .                         {}
-stmt ::= KEYWORD_ALIAS GVAR BACK_REF .                     {}
-stmt ::= KEYWORD_ALIAS GVAR NTH_REF .                      {}
-stmt ::= KEYWORD_UNDEF undef_list .                        {}
-stmt ::= stmt MODIFIER_IF expr_value .                     {}
-stmt ::= stmt MODIFIER_UNLESS expr_value .                 {}
-stmt ::= stmt MODIFIER_WHILE expr_value .                  {}
-stmt ::= stmt MODIFIER_UNTIL expr_value .                  {}
-stmt ::= stmt MODIFIER_RESCUE stmt .                       {}
-stmt ::= KEYWORD_UP_END LBRACE top_compstmt RBRACE .       {}
+stmt ::= KEYWORD_alias fitem fitem .                       {}
+stmt ::= KEYWORD_alias GVAR GVAR .                         {}
+stmt ::= KEYWORD_alias GVAR BACK_REF .                     {}
+stmt ::= KEYWORD_alias GVAR NTH_REF .                      {}
+stmt ::= KEYWORD_undef undef_list .                        {}
+stmt ::= stmt MODIFIER_if expr_value .                     {}
+stmt ::= stmt MODIFIER_unless expr_value .                 {}
+stmt ::= stmt MODIFIER_while expr_value .                  {}
+stmt ::= stmt MODIFIER_until expr_value .                  {}
+stmt ::= stmt MODIFIER_rescue stmt .                       {}
+stmt ::= KEYWORD_END LBRACE top_compstmt RBRACE .          {}
 stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }
@@ -78,7 +78,7 @@ fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
 fname ::= FID .                    {}
 fname ::= op .                     {}
-/*fname ::= reswords .               {}*/
+fname ::= reswords .               {}
 
 fsym ::= fname .                   {}
 /*fsym ::= symbol .                  {}*/
@@ -120,13 +120,55 @@ op ::= AREF .     {}
 op ::= ASET .     {}
 op ::= BACKTICK . {}
 
+reswords ::= KEYWORD__LINE__ .      {}
+reswords ::= KEYWORD__FILE__ .      {}
+reswords ::= KEYWORD__ENCODING__ .  {}
+reswords ::= KEYWORD_BEGIN .        {}
+reswords ::= KEYWORD_END .          {}
+reswords ::= KEYWORD_alias .        {}
+reswords ::= KEYWORD_and .          {}
+reswords ::= KEYWORD_begin .        {}
+reswords ::= KEYWORD_break .        {}
+reswords ::= KEYWORD_case .         {}
+reswords ::= KEYWORD_class .        {}
+reswords ::= KEYWORD_def .          {}
+reswords ::= KEYWORD_defined .      {}
+reswords ::= KEYWORD_do .           {}
+reswords ::= KEYWORD_else .         {}
+reswords ::= KEYWORD_elsif .        {}
+reswords ::= KEYWORD_end .          {}
+reswords ::= KEYWORD_ensure .       {}
+reswords ::= KEYWORD_false .        {}
+reswords ::= KEYWORD_for .          {}
+reswords ::= KEYWORD_in .           {}
+reswords ::= KEYWORD_module .       {}
+reswords ::= KEYWORD_next .         {}
+reswords ::= KEYWORD_nil .          {}
+reswords ::= KEYWORD_not .          {}
+reswords ::= KEYWORD_or .           {}
+reswords ::= KEYWORD_redo .         {}
+reswords ::= KEYWORD_rescue .       {}
+reswords ::= KEYWORD_retry .        {}
+reswords ::= KEYWORD_return .       {}
+reswords ::= KEYWORD_self .         {}
+reswords ::= KEYWORD_super .        {}
+reswords ::= KEYWORD_then .         {}
+reswords ::= KEYWORD_true .         {}
+reswords ::= KEYWORD_undef .        {}
+reswords ::= KEYWORD_when .         {}
+reswords ::= KEYWORD_yield .        {}
+reswords ::= KEYWORD_if .           {}
+reswords ::= KEYWORD_unless .       {}
+reswords ::= KEYWORD_while .        {}
+reswords ::= KEYWORD_until .        {}
+
 arg(A) ::= LPAREN arg(B) RPAREN .  { A.num = B.num; }
 arg(A) ::= LPAREN RPAREN .         { A.num = 0; }
 
 arg(A) ::= lhs EQUALS arg .        { A.num = 1; }
-arg(A) ::= lhs EQUALS arg MODIFIER_RESCUE arg . { A.num = 2; }
+arg(A) ::= lhs EQUALS arg MODIFIER_rescue arg .      { A.num = 2; }
 arg(A) ::= var_lhs OP_ASGN arg .                     { A.num = 3; }
-arg(A) ::= var_lhs OP_ASGN arg MODIFIER_RESCUE arg . { A.num = 4; }
+arg(A) ::= var_lhs OP_ASGN arg MODIFIER_rescue arg . { A.num = 4; }
 arg(A) ::= arg(B) DOT2 arg(C) .    { A.num = B.num + C.num; /*change*/ }
 arg(A) ::= arg(B) DOT3 arg(C) .    { A.num = B.num + C.num; /*change*/ }
 arg(A) ::= arg(B) PLUS arg(C) .    { A.num = B.num + C.num; }
@@ -155,7 +197,7 @@ arg(A) ::= arg LSHFT arg .         { A.num = 1; }
 arg(A) ::= arg RSHFT arg .         { A.num = 1; }
 arg(A) ::= arg ANDOP arg .         { A.num = 1; }
 arg(A) ::= arg OROP arg .          { A.num = 1; }
-arg(A) ::= KEYWORD_DEFINED opt_nl arg .        { A.num = 1; }
+arg(A) ::= KEYWORD_defined opt_nl arg .        { A.num = 1; }
 arg(A) ::= arg QUESTION arg opt_nl COLON arg . { A.num = 1; }
 
 arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
@@ -170,10 +212,10 @@ user_variable ::= GVAR .           {}
 user_variable ::= CONSTANT .       {}
 user_variable ::= CVAR .           {}
 
-keyword_variable ::= KEYWORD_NIL .         {}
-keyword_variable ::= KEYWORD_SELF .        {}
-keyword_variable ::= KEYWORD_TRUE .        {}
-keyword_variable ::= KEYWORD_FALSE .       {}
+keyword_variable ::= KEYWORD_nil .         {}
+keyword_variable ::= KEYWORD_self .        {}
+keyword_variable ::= KEYWORD_true .        {}
+keyword_variable ::= KEYWORD_false .       {}
 keyword_variable ::= KEYWORD__FILE__ .     {}
 keyword_variable ::= KEYWORD__LINE__ .     {}
 keyword_variable ::= KEYWORD__ENCODING__ . {}
