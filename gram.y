@@ -58,21 +58,59 @@ stmt ::= stmt MODIFIER_while expr_value .                  {}
 stmt ::= stmt MODIFIER_until expr_value .                  {}
 stmt ::= stmt MODIFIER_rescue stmt .                       {}
 stmt ::= KEYWORD_END LBRACE top_compstmt RBRACE .          {}
+stmt ::= lhs EQUALS mrhs .                                 {}
+stmt ::= mlhs EQUALS mrhs_arg .                            {}
 stmt ::= expr .                        {}
 
 expr(A) ::= arg .                  { A.num = 3; }
 
 expr_value ::= expr .              {}
 
-lhs ::= user_variable .            {}
-lhs ::= keyword_variable .         {}
-/*lhs ::= primary_value '[' opt_call_args rbracket . {}*/
-lhs ::= primary_value DOT IDENTIFIER .             {}
-lhs ::= primary_value COLON2 IDENTIFIER .          {}
-lhs ::= primary_value DOT CONSTANT .               {}
-lhs ::= primary_value COLON2 CONSTANT .            {}
-lhs ::= COLON3 CONSTANT .                          {}
-lhs ::= backref .                                  {}
+mlhs ::= mlhs_basic .               {}
+mlhs ::= LPAREN mlhs_inner RPAREN . {}
+
+mlhs_inner ::= mlhs_basic .               {}
+mlhs_inner ::= LPAREN mlhs_inner RPAREN . {}
+
+mlhs_basic ::= mlhs_head .                                  {}
+mlhs_basic ::= mlhs_head mlhs_item .                        {}
+mlhs_basic ::= mlhs_head TIMES mlhs_node .                  {}
+mlhs_basic ::= mlhs_head TIMES mlhs_node COMMA mlhs_post .  {}
+mlhs_basic ::= mlhs_head TIMES .                            {}
+mlhs_basic ::= mlhs_head TIMES COMMA mlhs_post .            {}
+mlhs_basic ::= TIMES mlhs_node .                            {}
+mlhs_basic ::= TIMES mlhs_node COMMA mlhs_post .            {}
+mlhs_basic ::= TIMES .                                      {}
+mlhs_basic ::= TIMES COMMA mlhs_post .                      {}
+
+mlhs_item ::= mlhs_node .                 {}
+mlhs_item ::= LPAREN mlhs_inner RPAREN .  {}
+
+mlhs_head ::= mlhs_item COMMA .           {}
+mlhs_head ::= mlhs_head mlhs_item COMMA . {}
+
+mlhs_post ::= mlhs_item .                 {}
+mlhs_post ::= mlhs_post COMMA mlhs_item . {}
+
+mlhs_node ::= user_variable .                             {}
+mlhs_node ::= keyword_variable .                          {}
+/*mlhs_node ::= primary_value '[' opt_call_args rbracket .  {}*/
+mlhs_node ::= primary_value DOT IDENTIFIER .              {}
+mlhs_node ::= primary_value COLON2 IDENTIFIER .           {}
+mlhs_node ::= primary_value DOT CONSTANT .                {}
+mlhs_node ::= primary_value COLON2 CONSTANT .             {}
+mlhs_node ::= COLON3 CONSTANT .                           {}
+mlhs_node ::= backref .                                   {}
+
+lhs ::= user_variable .                             {}
+lhs ::= keyword_variable .                          {}
+/*lhs ::= primary_value '[' opt_call_args rbracket .  {}*/
+lhs ::= primary_value DOT IDENTIFIER .              {}
+lhs ::= primary_value COLON2 IDENTIFIER .           {}
+lhs ::= primary_value DOT CONSTANT .                {}
+lhs ::= primary_value COLON2 CONSTANT .             {}
+lhs ::= COLON3 CONSTANT .                           {}
+lhs ::= backref .                                   {}
 
 fname ::= IDENTIFIER .             {}
 fname ::= CONSTANT .               {}
@@ -201,6 +239,20 @@ arg(A) ::= KEYWORD_defined opt_nl arg .        { A.num = 1; }
 arg(A) ::= arg QUESTION arg opt_nl COLON arg . { A.num = 1; }
 
 arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
+
+arg_value ::= arg .                     {}
+
+args ::= arg_value .                    {}
+args ::= TIMES arg_value .              {}
+args ::= args COMMA arg_value .         {}
+args ::= args COMMA TIMES arg_value .   {}
+
+mrhs_arg ::= mrhs .       {}
+mrhs_arg ::= arg_value .  {}
+
+mrhs ::= args COMMA arg_value .         {}
+mrhs ::= args COMMA TIMES arg_value .   {}
+mrhs ::= TIMES arg_value .              {}
 
 primary ::= COLON3 CONSTANT .      {}
 

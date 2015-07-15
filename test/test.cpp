@@ -136,6 +136,106 @@ int main() {
 
   ExpectEQ(parse(std::string("END { 2 + 2 }")), 1);
 
+  // stmt ::= lhs EQUALS mrhs
+  ExpectEQ(parse(std::string("identifier = 1, 1")), 1);
+  ExpectEQ(parse(std::string("nil = * 1 , 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant.identifier = * 1 , 1 , 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant::identifier = * 1 , * 1 , 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant.Constant = 1 , * 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant::Constant = * 1 , * 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant = 1 , 1 , * 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant = 1 , * 1 , * 1")), 1);
+  ExpectEQ(parse(std::string("$& = * 1")), 1);
+
+  // stmt ::= mlhs EQUALS mrhs_arg
+  //
+  //
+  // mlhs ::= mlhs_basic
+  //
+  // mlhs_basic ::= mlhs_head
+  // mlhs_item ::= mlhs_node
+  ExpectEQ(parse(std::string("identifier , = 1")), 1);
+  ExpectEQ(parse(std::string("identifier , identifier , = 1")), 1);
+  // mlhs_item ::= tLPAREN mlhs_inner rparen
+  ExpectEQ(parse(std::string("( identifier , ) = 1")), 1);
+  ExpectEQ(parse(std::string("( identifier , identifier, ) = 1")), 1);
+  //
+  // mlhs ::= LPAREN mlhs_inner RPAREN
+  ExpectEQ(parse(std::string("( ( identifier , identifier, ) ) = 1")), 1);
+
+  ExpectEQ(parse(std::string("@instanceVar , = 1")), 1);
+  ExpectEQ(parse(std::string("$globalVar , = 1")), 1);
+  ExpectEQ(parse(std::string("CONSTANT , = 1")), 1);
+  ExpectEQ(parse(std::string("@@classVar , = 1")), 1);
+  ExpectEQ(parse(std::string("nil , = 1")), 1);
+  ExpectEQ(parse(std::string("self , = 1")), 1);
+  ExpectEQ(parse(std::string("true , = 1")), 1);
+  ExpectEQ(parse(std::string("false , = 1")), 1);
+  ExpectEQ(parse(std::string("__FILE__ , = 1")), 1);
+  ExpectEQ(parse(std::string("__LINE__ , = 1")), 1);
+  ExpectEQ(parse(std::string("__ENCODING__ , = 1")), 1);
+  // mlhs_node ::= primary_value '[' opt_call_args rbracket
+  ExpectEQ(parse(std::string(":::Constant.identifier , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant::identifier , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant.Constant , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant::Constant , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant , = 1")), 1);
+  ExpectEQ(parse(std::string("$1 , = 1")), 1);
+  ExpectEQ(parse(std::string("$& , = 1")), 1);
+  //
+  // mlhs_basic ::= mlhs_head mlhs_item
+  ExpectEQ(parse(std::string("identifier , identifier = 1")), 1);
+  ExpectEQ(parse(std::string("( identifier , identifier ) = 1")), 1);
+  ExpectEQ(parse(std::string("( ( identifier , ) , identifier ) = 1")), 1);
+  //
+  // mlhs_basic ::= mlhs_head TIMES mlhs_node
+  ExpectEQ(parse(std::string("identifier , * identifier = 1")), 1);
+  //ExpectEQ(parse(std::string(" ( identifier ) , * identifier = 1")), 1);
+  ExpectEQ(parse(std::string("( identifier , ) , * identifier = 1")), 1);
+  //ExpectEQ(parse(std::string(" ( identifier , ) * identifier = 1")), 1);
+  //
+  // mlhs_basic ::= mlhs_head TIMES mlhs_node COMMA mlhs_post
+  ExpectEQ(parse(std::string("identifier , * identifier , identifier = 1")), 1);
+  ExpectEQ(parse(std::string("( identifier , ) , * identifier, identifier, identifier = 1")), 1);
+  //
+  // mlhs_basic ::= mlhs_head TIMES
+  ExpectEQ(parse(std::string("identifier , * = 1")), 1);
+  ExpectEQ(parse(std::string("( identifier , ) , * = 1")), 1);
+  //
+  // mlhs_basic ::= mlhs_head TIMES COMMA mlhs_post
+  ExpectEQ(parse(std::string("identifier , * , identifier = 1")), 1);
+  ExpectEQ(parse(std::string("identifier , * , identifier , identifier = 1")), 1);
+  //
+  // mlhs_basic ::= TIMES mlhs_node
+  ExpectEQ(parse(std::string("* identifier = 1")), 1);
+  //
+  // mlhs_basic ::= TIMES mlhs_node COMMA mlhs_post
+  ExpectEQ(parse(std::string("* identifier , identifier = 1")), 1);
+  ExpectEQ(parse(std::string("* identifier , identifier , identifier = 1")), 1);
+  // mlhs_basic ::= TIMES
+  ExpectEQ(parse(std::string("* = 1")), 1);
+  // mlhs_basic ::= TIMES COMMA mlhs_post
+  ExpectEQ(parse(std::string("* , identifier , identifier = 1")), 1);
+  ExpectEQ(parse(std::string("* , identifier , identifier , identifier = 1")), 1);
+  //
+  //
+  // mrhs_arg ::= mrhs
+  //
+  // mrhs ::= args COMMA arg_value
+  ExpectEQ(parse(std::string("identifier , identifier = 1 , 1")), 1);
+  // mrhs ::= args COMMA TIMES arg_value
+  ExpectEQ(parse(std::string("identifier , identifier = 1 , * 1")), 1);
+  // mrhs ::= TIMES arg_value
+  ExpectEQ(parse(std::string("identifier , identifier = * 1")), 1);
+  //
+  // mrhs_arg ::= arg_value
+  //
+  // arg_value ::= arg
+  ExpectEQ(parse(std::string("identifier , identifier = 1")), 1);
+
+  // stmt ::= expr
+  // expr ::= arg
+  // arg ::= lhs EQUALS arg
   ExpectEQ(parse(std::string("identifierFoo = 1")), 1);
 
   ExpectEQ(parse(std::string("@instanceVarFoo = 1")), 1);
