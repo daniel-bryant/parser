@@ -66,6 +66,20 @@ expr(A) ::= arg .                  { A.num = 3; }
 
 expr_value ::= expr .              {}
 
+/*
+command ::= fcall command_args       %prec tLOWEST .{}
+command ::= fcall command_args cmd_brace_block .{}
+command ::= primary_value '.' operation2 command_args %prec tLOWEST .{}
+command ::= primary_value '.' operation2 command_args cmd_brace_block .{}
+command ::= primary_value tCOLON2 operation2 command_args %prec tLOWEST .{}
+command ::= primary_value tCOLON2 operation2 command_args cmd_brace_block .{}
+command ::= keyword_super command_args .{}
+command ::= keyword_yield command_args .{}
+command ::= keyword_return call_args .{}
+command ::= keyword_break call_args .{}
+command ::= keyword_next call_args .{}
+*/
+
 mlhs ::= mlhs_basic .               {}
 mlhs ::= LPAREN mlhs_inner RPAREN . {}
 
@@ -94,7 +108,7 @@ mlhs_post ::= mlhs_post COMMA mlhs_item . {}
 
 mlhs_node ::= user_variable .                             {}
 mlhs_node ::= keyword_variable .                          {}
-/*mlhs_node ::= primary_value '[' opt_call_args rbracket .  {}*/
+mlhs_node ::= primary_value LBRACKET opt_call_args rbracket .  {}
 mlhs_node ::= primary_value DOT IDENTIFIER .              {}
 mlhs_node ::= primary_value COLON2 IDENTIFIER .           {}
 mlhs_node ::= primary_value DOT CONSTANT .                {}
@@ -104,7 +118,7 @@ mlhs_node ::= backref .                                   {}
 
 lhs ::= user_variable .                             {}
 lhs ::= keyword_variable .                          {}
-/*lhs ::= primary_value '[' opt_call_args rbracket .  {}*/
+lhs ::= primary_value LBRACKET opt_call_args rbracket .  {}
 lhs ::= primary_value DOT IDENTIFIER .              {}
 lhs ::= primary_value COLON2 IDENTIFIER .           {}
 lhs ::= primary_value DOT CONSTANT .                {}
@@ -242,6 +256,29 @@ arg(A) ::= NUM(B) .                { A.num = B.num; A.str = B.str; }
 
 arg_value ::= arg .                     {}
 
+opt_call_args ::= none .  {}
+opt_call_args ::= call_args .  {}
+opt_call_args ::= args COMMA .  {}
+opt_call_args ::= args COMMA assocs COMMA .  {}
+opt_call_args ::= assocs COMMA .  {}
+
+/*
+call_args ::= command .                         {}
+*/
+call_args ::= args opt_block_arg .              {}
+call_args ::= assocs opt_block_arg .            {}
+call_args ::= args COMMA assocs opt_block_arg . {}
+call_args ::= block_arg .                       {}
+
+/*
+command_args ::= call_args . {}
+*/
+
+block_arg ::= AMPER arg_value .  {}
+
+opt_block_arg ::= COMMA block_arg . {}
+opt_block_arg ::= none .            {}
+
 args ::= arg_value .                    {}
 args ::= TIMES arg_value .              {}
 args ::= args COMMA arg_value .         {}
@@ -278,11 +315,23 @@ var_lhs ::= keyword_variable .     {}
 backref ::= NTH_REF .              {}
 backref ::= BACK_REF .             {}
 
+assocs ::= assoc .              {}
+assocs ::= assocs COMMA assoc . {}
+
+assoc ::= arg_value ASSOC arg_value .                        {}
+/*
+assoc ::= tLABEL arg_value .                                  {}
+assoc ::= tSTRING_BEG string_contents tLABEL_END arg_value .  {}
+assoc ::= tDSTAR arg_value .                                  {}
+*/
+
 opt_terms ::= .                    {}
 opt_terms ::= terms .              {}
 
 opt_nl ::= .                       {}
 opt_nl ::= NEWLINE .               {}
+
+rbracket ::= opt_nl RBRACKET . {}
 
 term ::= SEMICOLON .               {}
 term ::= NEWLINE .                 {}

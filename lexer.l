@@ -27,6 +27,7 @@
 "/="         {return OP_ASGN;}
 "%="         {return OP_ASGN;}
 "**="        {return OP_ASGN;}
+"=>"         {return ASSOC;}
 "|"          {return PIPE;}
 "^"          {return CARET;}
 "&"          {return AMPER;}
@@ -55,6 +56,8 @@
 ")"          {return RPAREN;}
 "{"          {return LBRACE;}
 "}"          {return RBRACE;}
+"["          {return LBRACKET;}
+"]"          {return RBRACKET;}
 ","          {return COMMA;}
 "="          {return EQUALS;}
 "[]"         {return AREF;}

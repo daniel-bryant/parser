@@ -174,7 +174,39 @@ int main() {
   ExpectEQ(parse(std::string("__FILE__ , = 1")), 1);
   ExpectEQ(parse(std::string("__LINE__ , = 1")), 1);
   ExpectEQ(parse(std::string("__ENCODING__ , = 1")), 1);
-  // mlhs_node ::= primary_value '[' opt_call_args rbracket
+  // mlhs_node ::= primary_value LBRACKET opt_call_args rbracket
+  // opt_call_args ::= none
+  ExpectEQ(parse(std::string(":::Constant [ ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ \n] , = 1")), 1);
+  // opt_call_args ::= call_args
+  //    call_args ::= command
+  //    todo
+  //    call_args ::= args opt_block_arg
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 2 ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 2 , & 1 ] , = 1")), 1);
+  //    call_args ::= assocs opt_block_arg
+  ExpectEQ(parse(std::string(":::Constant [ 1 => 1 , 2=>2 ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 => 1 , 2=>2 , & 1 ] , = 1")), 1);
+  //    call_args ::= args COMMA assocs opt_block_arg
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , 1=>1 ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , 1=>1 , & 1 ] , = 1")), 1);
+  //    call_args ::= block_arg
+  ExpectEQ(parse(std::string(":::Constant [ & 1 ] , = 1")), 1);
+  // opt_call_args ::= args COMMA
+  ExpectEQ(parse(std::string(":::Constant [ 1 , ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ * 1 , ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , * 1 , ] , = 1")), 1);
+  // opt_call_args ::= args COMMA assocs COMMA
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1=>1, ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ * 1 , 1=>1, 2=>2, ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , 1=>1, 2=>2, ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , * 1 , 1=>1, 2=>2, ] , = 1")), 1);
+  // opt_call_args ::= assocs COMMA
+  ExpectEQ(parse(std::string(":::Constant [ 1=>1, ] , = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1=>1, 2=>2, ] , = 1")), 1);
+  // add more assocs when filled in
+  //
   ExpectEQ(parse(std::string(":::Constant.identifier , = 1")), 1);
   ExpectEQ(parse(std::string(":::Constant::identifier , = 1")), 1);
   ExpectEQ(parse(std::string(":::Constant.Constant , = 1")), 1);
@@ -260,7 +292,39 @@ int main() {
 
   ExpectEQ(parse(std::string("__ENCODING__ = 1")), 1);
 
-  ExpectEQ(parse(std::string("")), 1); // lhs ::= primary_value '[' opt_call_args rbracket TODO
+  // lhs ::= primary_value LBRACKET opt_call_args rbracket
+  // opt_call_args ::= none
+  ExpectEQ(parse(std::string(":::Constant [ ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ \n] = 1")), 1);
+  // opt_call_args ::= call_args
+  //    call_args ::= command
+  //    todo
+  //    call_args ::= args opt_block_arg
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 2 ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 2 , & 1 ] = 1")), 1);
+  //    call_args ::= assocs opt_block_arg
+  ExpectEQ(parse(std::string(":::Constant [ 1 => 1 , 2=>2 ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 => 1 , 2=>2 , & 1 ] = 1")), 1);
+  //    call_args ::= args COMMA assocs opt_block_arg
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , 1=>1 ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , 1=>1 , & 1 ] = 1")), 1);
+  //    call_args ::= block_arg
+  ExpectEQ(parse(std::string(":::Constant [ & 1 ] = 1")), 1);
+  // opt_call_args ::= args COMMA
+  ExpectEQ(parse(std::string(":::Constant [ 1 , ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ * 1 , ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , * 1 , ] = 1")), 1);
+  // opt_call_args ::= args COMMA assocs COMMA
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1=>1, ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ * 1 , 1=>1, 2=>2, ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , 1 , 1=>1, 2=>2, ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1 , * 1 , 1=>1, 2=>2, ] = 1")), 1);
+  // opt_call_args ::= assocs COMMA
+  ExpectEQ(parse(std::string(":::Constant [ 1=>1, ] = 1")), 1);
+  ExpectEQ(parse(std::string(":::Constant [ 1=>1, 2=>2, ] = 1")), 1);
+  // add more assocs when filled in
+  //
 
   ExpectEQ(parse(std::string(":::CONSTANTFOO.identifierBar = 1")), 1); // lhs ::= primary_value DOT IDENTIFIER
 
