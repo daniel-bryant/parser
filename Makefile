@@ -6,7 +6,7 @@ CXXFLAGS = -Wall -Wextra -Weffc++ -Wfloat-equal -Wshadow\
 shell: main.o parse.o gram.o lexer.yy.o
 	$(CXX) $(CXXFLAGS) main.o parse.o gram.o lexer.yy.o -o shell
  
-parse.o: parse.cc lexer.yy.hpp gram.hpp
+parse.o: parse.cpp lexer.yy.hpp gram.hpp
  
 gram.cpp: lemonfiles
  
