@@ -6,7 +6,7 @@
 int main() {
   std::string commandLine;
   while (getline(std::cin, commandLine)) {
-    parse(commandLine);
+    parse(commandLine.c_str());
   }
   return 0;
 }

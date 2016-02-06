@@ -11,12 +11,12 @@ void Parse(void* parser, int token, Token tokenInfo, bool* valid);
 void ParseFree(void* parser, void(*freeProc)(void*));
 YYSTYPE yylval;
 
-int parse(const std::string& commandLine) {
+int parse(const char* str) {
   int retval = 1;
   // Set up the scanner
   yyscan_t scanner;
   yylex_init(&scanner);
-  YY_BUFFER_STATE bufferState = yy_scan_string(commandLine.c_str(), scanner);
+  YY_BUFFER_STATE bufferState = yy_scan_string(str, scanner);
 
   // Set up the parser
   void* gramParser = ParseAlloc(malloc);
